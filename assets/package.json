@@ -1,0 +1,22 @@
+{
+  "name": "gamanager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "angular": "^1.4.5",
+    "angular-route": "^1.4.5",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^2.2.0",
+    "gulp-typescript": "^2.8.2",
+    "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "André Heller; anheller6@gmail.com",
+  "license": "Proprietary"
+}
