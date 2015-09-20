@@ -1,10 +1,11 @@
+///<reference path="../../reference.ts" />
 module gamanager {
 	export class WebProperty {
 		
 		private PROFILES: util.StringMap<Profile> = new util.StringMap<Profile>();
 		
 		constructor(
-			private gam: GAManager,
+			private appM: AppManager,
 			private id: string,
 			private name: string,
 			private internalId: string,
@@ -16,7 +17,7 @@ module gamanager {
 				this.PROFILES.put(
 					profiles[i].id, 
 					new Profile(
-						this.gam,
+						this.appM,
 						profiles[i].id,
 						profiles[i].name,
 						profiles[i].type,

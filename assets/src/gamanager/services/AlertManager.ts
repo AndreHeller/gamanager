@@ -1,0 +1,69 @@
+///<reference path="../../reference.ts" />
+module gamanager {
+	export class AlertManager {
+				
+		constructor(private $rootScope){
+			
+		}
+		  
+		
+		/*******************************************************
+		 * Add Success alert to alerts array
+		 */
+		public showSuccessAlert(msg: string){
+			console.log('AlertManager: Handling Success');
+			this.$rootScope.alerts.push({
+				bsType: "success",
+				message: msg,
+				type: "Success: ",
+				icon: "ok-sign"
+			});
+			this.$rootScope.$apply();
+		}
+		
+		
+		/*******************************************************
+		 * Add Info alert to alerts array
+		 */
+		public showInfoAlert(msg: string){
+			console.log('AlertManager: Handling Success');
+			this.$rootScope.alerts.push({
+				bsType: "info",
+				message: msg,
+				type: "Info: ",
+				icon: "info-sign"
+			});
+			this.$rootScope.$apply();
+		}
+		
+		
+		/*******************************************************
+		 * Add Warning alert to alerts array
+		 */
+		public showWarningAlert(msg: string){
+			console.log('AlertManager: Handling Success');
+			this.$rootScope.alerts.push({
+				bsType: "warning",
+				message: msg,
+				type: "Warning: ",
+				icon: "exclamation-sign"
+			});
+			this.$rootScope.$apply();
+		}
+		
+		
+		/*******************************************************
+		 * Add Error alert to alerts array
+		 */
+		public showErrorAlert(msg: string){
+			console.log('AlertManager: Handling Error');
+			this.$rootScope.alerts.push({
+				bsType: "danger",
+				message: msg,
+				type: "Error: ",
+				icon: "remove-sign"
+			});
+			this.$rootScope.$apply();
+		}
+	}
+}

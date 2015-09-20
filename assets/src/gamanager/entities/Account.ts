@@ -1,9 +1,10 @@
+///<reference path="../../reference.ts" />
 module gamanager {
 	export class Account {
 		private WEB_PROPERTIES: util.StringMap<WebProperty> = new util.StringMap<WebProperty>();
 		
 		constructor(
-			private gam: GAManager,
+			private appM: AppManager,
 			private _id: string,
 			private _name: string,
 			webProperties: Array<ParcialWebProperty>
@@ -12,7 +13,7 @@ module gamanager {
 				this.WEB_PROPERTIES.put(
 						webProperties[i].id,
 						new WebProperty(
-							this.gam,
+							this.appM,
 							webProperties[i].id,
 							webProperties[i].name,
 							webProperties[i].internalWebPropertyId,

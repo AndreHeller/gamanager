@@ -1,6 +1,9 @@
 var gulp = require('gulp'),
 	concat = require('gulp-concat'),
-	connect = require('gulp-connect');
+	connect = require('gulp-connect'),
+	replace = require('gulp-replace'),
+	merge = require('merge-stream'),
+	templateCache = require('gulp-angular-templatecache');
 
 gulp.task('build', function() {
 	var typescript = require('gulp-typescript');
@@ -8,11 +11,17 @@ gulp.task('build', function() {
 		declarationFiles: false
 	});
 
-	return gulp.src(['typings/**/*.d.ts', 'src/**/*.ts'])
-				.pipe(typescript(tsOptions))
-				.pipe(concat('common.js'))
-				.pipe(gulp.dest('dist/scripts'))
-				.pipe(connect.reload());
+	var ts = gulp.src(['src/typings/**/*.d.ts', 'src/**/*.ts'])
+						.pipe(typescript(tsOptions));
+
+	var tpl = gulp.src(['src/**/*.html'])
+						.pipe(templateCache({standalone: true}));
+
+	return merge(ts, tpl)
+		.pipe(replace(/var ([a-zA-Z0-0_]*);/, 'var $1 = $1 || {};'))
+		.pipe(concat('common.js'))
+		.pipe(gulp.dest('dist/scripts'))
+		.pipe(connect.reload());
 });
 
 gulp.task('dev', ['server', 'watch'], function() {
@@ -20,7 +29,8 @@ gulp.task('dev', ['server', 'watch'], function() {
 });
 
 gulp.task('watch', function () {
-	gulp.watch(['./src/**/*.ts'], ['build']);
+	gulp.watch(['./src/**/**/**/**/*.ts'], ['build']);
+	gulp.watch(['./src/**/**/**/**/*.html'], ['build']);
 });
 
 gulp.task('server', function() {

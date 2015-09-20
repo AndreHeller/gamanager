@@ -1,8 +1,9 @@
+///<reference path="../../reference.ts" />
 module gamanager {
 	export class Profile {
 		
 		constructor(
-			private gam: GAManager,
+			private appM: AppManager,
 			private id: string,
 			private name: string,
 			private type: string,

@@ -1,0 +1,13 @@
+<navigation></navigation>
+
+<!-- User is not login -->
+<div class="jumbotron" ng-if="!$root.loggedUser.logged">
+	<h1>Google Analytics Manager</h1>
+	<p>Pro pokračování se musíte <a href="/#/" ng-click="vm.authorize()">přihlásit</a>.</p>
+</div>
+
+<!-- User is already login --> 
+<div ng-if="$root.loggedUser.logged">
+	<img ng-src="{{$root.loggedUser.img}}">
+	<h1>{{$root.loggedUser.name}}</h1>
+</div>

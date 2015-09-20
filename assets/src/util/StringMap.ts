@@ -1,7 +1,7 @@
 module util {
 	export class StringMap<V> {
 		private VALUES: {[key: string]: V;} = {};
-		private _size: number = 0;
+		private size: number = 0;
 		private NAMES: Array<string> = [];
 		
 		
@@ -19,8 +19,14 @@ module util {
 			return this.NAMES;
 		}
 		
-		public get size(): number{
-			return this._size;
+		public getSize(): number{
+			return this.size;
+		}
+		
+		public flush(){
+			this.NAMES = [];
+			this.size = 0;
+			this.VALUES = {};
 		}
 	}
 }

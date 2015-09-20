@@ -1,0 +1,6 @@
+<div class="alert alert-{{alert.bsType}}" ng-repeat="alert in $root.alerts" role="alert" ng-show="alert.bsType == 'success' || alert.bsType == 'info' || alert.bsType == 'warning' || alert.bsType == 'danger'">
+	<a ng-click="closeAlert($index)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	<span class="glyphicon glyphicon-{{alert.icon}}" aria-hidden="true"></span>
+	<span class="sr-only">{{alert.type}}</span>
+	{{alert.message}}
+</div>
