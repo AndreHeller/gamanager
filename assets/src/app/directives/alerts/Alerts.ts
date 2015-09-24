@@ -4,7 +4,7 @@ module application.directives {
 			restrict: 'E',
 			template: $templateCache.get('app/directives/alerts/Alerts.html'),
 			scope: {},
-			link: function(scope, element, attr){
+			link: function(scope:any, element, attr){
 				scope.closeAlert = function(index) {
 					scope.$parent.alerts[index] = null;
 				}

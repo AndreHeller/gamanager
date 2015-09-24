@@ -7,12 +7,7 @@ module application {
 		constructor(private $scope: any, private am: gamanager.AppManager){ 
 			this.$scope.vm = this;
 			
-			/*this.gam.getAccounts()
-				.then(
-					(accounts) => {this.$scope.accounts = accounts},
-					(error) => {this.$scope.error = error});
-			*/		
-				
+			this.$scope.accounts = this.am.getAccounts().toArray();				
 		}
 	}
 }

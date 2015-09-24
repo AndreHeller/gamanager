@@ -2,7 +2,7 @@
 module gamanager {
 	export class AlertManager {
 				
-		constructor(private $rootScope){
+		constructor(private $rootScope, private $log){
 			
 		}
 		  
@@ -11,7 +11,7 @@ module gamanager {
 		 * Add Success alert to alerts array
 		 */
 		public showSuccessAlert(msg: string){
-			console.log('AlertManager: Handling Success');
+			this.$log.debug('AlertManager: Handling Success');
 			this.$rootScope.alerts.push({
 				bsType: "success",
 				message: msg,
@@ -26,7 +26,7 @@ module gamanager {
 		 * Add Info alert to alerts array
 		 */
 		public showInfoAlert(msg: string){
-			console.log('AlertManager: Handling Success');
+			this.$log.debug('AlertManager: Handling Success');
 			this.$rootScope.alerts.push({
 				bsType: "info",
 				message: msg,
@@ -41,7 +41,7 @@ module gamanager {
 		 * Add Warning alert to alerts array
 		 */
 		public showWarningAlert(msg: string){
-			console.log('AlertManager: Handling Success');
+			this.$log.debug('AlertManager: Handling Success');
 			this.$rootScope.alerts.push({
 				bsType: "warning",
 				message: msg,
@@ -56,7 +56,7 @@ module gamanager {
 		 * Add Error alert to alerts array
 		 */
 		public showErrorAlert(msg: string){
-			console.log('AlertManager: Handling Error');
+			this.$log.debug('AlertManager: Handling Error');
 			this.$rootScope.alerts.push({
 				bsType: "danger",
 				message: msg,

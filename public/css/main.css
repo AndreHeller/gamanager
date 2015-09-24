@@ -4,6 +4,20 @@ body {
 a {
     cursor: pointer;
 }
+.collapse-hover {
+    cursor: pointer;
+}
+.collapse-hover:hover {
+    background-color: #e5e5e5;
+}
+.list-group-item {
+    padding: 0;
+}
+.list-group-item > *{
+    padding: 10px 15px;
+}
+
+
 
 
 #loader-wrapper {
@@ -24,7 +38,7 @@ a {
     margin: -75px 0 0 -75px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #E9573F;
+    border-top-color: #f05721;
     z-index: 1001;
     opacity: 0;
     -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
@@ -40,7 +54,7 @@ a {
     bottom: 5px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #F6BB42;
+    border-top-color: #fff;
     -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
       animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
 }
@@ -54,7 +68,7 @@ a {
     bottom: 15px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #8CC152;
+    border-top-color: #f7991c;
     -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
       animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
 }

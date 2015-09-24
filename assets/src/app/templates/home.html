@@ -2,12 +2,19 @@
 
 <!-- User is not login -->
 <div class="jumbotron" ng-if="!$root.loggedUser.logged">
-	<h1>Google Analytics Manager</h1>
-	<p>Pro pokračování se musíte <a href="/#/" ng-click="vm.authorize()">přihlásit</a>.</p>
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 pull-right ">
+		<img src="img/GA_logo.png" class="pull-left img-responsive">
+	</div>
+	<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+		<h1>Google Analytics Manager</h1>
+		<p>Tato aplikace umožnuje zobrazit a spravovat vaše veškeré Google Analytics účty a jejich nastavení.</p>
+		<p>Pro pokračování se musíte <a href="/#/" ng-click="vm.authorize()">přihlásit</a>.</p>
+	</div>
+	<div class="clearfix"></div>
 </div>
 
 <!-- User is already login --> 
 <div ng-if="$root.loggedUser.logged">
-	<img ng-src="{{$root.loggedUser.img}}">
-	<h1>{{$root.loggedUser.name}}</h1>
+	<h1><img ng-src="{{$root.loggedUser.img}}"> {{$root.loggedUser.name}}</h1>
+	<!--<div>Doba přihlášení: <my-current-time time="$root.loggedUser.loggedTime"></my-current-time></div>-->
 </div>

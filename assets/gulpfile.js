@@ -8,7 +8,8 @@ var gulp = require('gulp'),
 gulp.task('build', function() {
 	var typescript = require('gulp-typescript');
 	var tsOptions = typescript.createProject({
-		declarationFiles: false
+		declarationFiles: false,
+		target: 'ES5'
 	});
 
 	var ts = gulp.src(['src/typings/**/*.d.ts', 'src/**/*.ts'])

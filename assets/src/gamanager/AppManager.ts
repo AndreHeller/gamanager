@@ -3,14 +3,14 @@ module gamanager {
 	export class AppManager{
 		
 		//Angular DI
-		public static $inject = ['$rootScope'];
+		public static $inject = ['$rootScope','$log'];
 		
 		private connectionM: ConnectionManager;
 		private accountM: AccountManager;
 		
-		constructor(private $rootScope) {
-			this.connectionM = new ConnectionManager();
-			this.accountM = new AccountManager(this);
+		constructor(private $rootScope, private $log) {
+			this.connectionM = new ConnectionManager(this.$log);
+			this.accountM = new AccountManager(this, this.$log);
 		}
 		
 		
@@ -24,10 +24,15 @@ module gamanager {
 						.then((response) => {return this.connectionM.loadUserData();})
 						.then( 
 							(response) => {
-								console.log('AppManager: Setting user data into rootScope.');
-								this.$rootScope.loggedUser.logged = true;
-								this.$rootScope.loggedUser.name = response.result.displayName;
-								this.$rootScope.loggedUser.img = response.result.image.url;
+								this.$log.debug('AppManager: Setting user data into rootScope.');
+								this.$rootScope.loggedUser = {
+									logged: true,
+									firstName: response.result.name.givenName,
+									lastName: response.result.familyName,
+									name: response.result.displayName,
+									img: response.result.image.url,
+									loggedTime: new Date()
+								}
 								
 								return this.connectionM.loadAnalytics();
 							}
@@ -45,5 +50,20 @@ module gamanager {
 			this.accountM.deleteAllAccounts();
 			this.$rootScope.loggedUser = {};
 		}
+		
+		
+		/**
+		 * Vrátí stringmapu se všemi účty
+		 */
+		public getAccounts(){
+			return this.accountM.getAllAccounts();
+		}
+		
+		/**
+		 * Vrátí stringmapu se všemi účty
+		 */
+		public getAccount(accountId: string):Account{
+			return this.accountM.getAccount(accountId);
+		} 
 	}
 }

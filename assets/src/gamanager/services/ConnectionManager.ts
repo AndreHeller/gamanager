@@ -5,15 +5,15 @@ module gamanager {
 
 		private authorizeM: AuthorizeManager			
 		
-		constructor(){
-			this.authorizeM = new AuthorizeManager();
+		constructor(private $log){
+			this.authorizeM = new AuthorizeManager(this.$log);
 		}
 		
 		/*******************************************************************
 		 * Authorize Google Account OAuth 2.0
 		 */
 		public authorize(): Promises.Promise {
-			console.log('ConnectionManager: Starting authorize.');
+			this.$log.debug('ConnectionManager: Starting authorize.');
 			
 			var d = new Promises.Deferred();
 			
@@ -30,7 +30,7 @@ module gamanager {
 				d.fulfill();
 			}*/
 			 
-			console.log('ConnectionManager: Returning authorize promise.');
+			this.$log.debug('ConnectionManager: Returning authorize promise.');
 			return d.promise();
 		}
 		
@@ -39,21 +39,21 @@ module gamanager {
 		 * Load Google+ Client library
 		 */
 		public loadGooglePlus(): Promises.Promise {
-			console.log('ConnectionManager: Starting load Google+ library..');
+			this.$log.debug('ConnectionManager: Starting load Google+ library..');
 			
 			var d = new Promises.Deferred() 
 			
 			gapi.client.load('plus', 'v1', () => {
 				if(gapi.client.load){
-					console.log('ConnectionManager: Fulfilling Google+ library request.');
+					this.$log.debug('ConnectionManager: Fulfilling Google+ library request.');
 					d.fulfill();
 				}
 				else {
-					console.log('ConnectionManager: Rejecting Google+ library request.');
+					this.$log.error('ConnectionManager: Rejecting Google+ library request.');
 					d.reject(Strings.ERROR_PLUS_NOT_FOUND)
 				}
 			});
-			console.log('ConnectionManager: Returning Google+ library promise.');
+			this.$log.debug('ConnectionManager: Returning Google+ library promise.');
 			return d.promise();
 		}
 		
@@ -63,7 +63,7 @@ module gamanager {
 		 */
 		public loadUserData(): Promises.Promise {
 			
-			console.log('ConnectionManager: Starting load user data.');
+			this.$log.debug('ConnectionManager: Starting load user data.');
 			
 			var d = new Promises.Deferred() 
 			if(gapi.client.plus){
@@ -72,20 +72,21 @@ module gamanager {
 				})
 				.then(
 					(user)=>{
-						console.log('ConnectionManager: Fulfilling User data request.');
+						this.$log.debug('ConnectionManager: Fulfilling User data request.');
 						d.fulfill(user)
 					},
 					(err) => {
-						console.error('ConnectionManager: Rejecting Google+ library request.');
+						this.$log.error('ConnectionManager: Rejecting Google+ library request.');
 						d.reject(Strings.ERROR_USER_DATA)
 						}
 				);
 			}
 			else {
+				this.$log.error('ConnectionManager: Rejecting Google+ library request.');
 				d.reject(Strings.ERROR_PLUS_NOT_FOUND);
 			}
 			
-			console.log('ConnectionManager: Returning User data request promise.');
+			this.$log.debug('ConnectionManager: Returning User data request promise.');
 			return d.promise();
 		}
 		
@@ -95,22 +96,22 @@ module gamanager {
 		 */
 		public loadAnalytics(): Promises.Promise {
 			
-			console.log('ConnectionManager: Starting load Analytics librabry.');
+			this.$log.debug('ConnectionManager: Starting load Analytics librabry.');
 			
 			var d = new Promises.Deferred() 
 			
 			gapi.client.load('analytics', 'v3', () => {
 				if(gapi.client.analytics){
-					console.log('ConnectionManager: Fulfiiling Analytics library request.');
+					this.$log.debug('ConnectionManager: Fulfiiling Analytics library request.');
 					d.fulfill();
 				}
 				else {
-					console.error('ConnectionManager: Rejecting Analytics librabry request.');
+					this.$log.error('ConnectionManager: Rejecting Analytics librabry request.');
 					d.reject(Strings.ERROR_ANALYTICS_NOT_FOUND)
 				}
 			});
 			
-			console.log('ConnectionManager: Returning Analyitics loadingpPromise');
+			this.$log.debug('ConnectionManager: Returning Analyitics loadingpPromise');
 			return d.promise();
 		}
 		

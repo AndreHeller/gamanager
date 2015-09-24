@@ -15,13 +15,20 @@ module application {
 			this.$scope.menus = [
 				{
 					name : "Home",
-					link : "/",
+					link : Routes.HOME,
 					show : 'always'
-					
 				}, {
-					name : "Accounts",
-					link : "/accounts",
+					name : "Explorer",
+					link : Routes.ACCOUNTS,
 					show : 'loginOnly'
+				}, {
+					name : "New Settings",
+					link : Routes.NEW_SETTINGS,
+					show : 'loginOnly'
+				}, {
+					name : "TEST",
+					link : Routes.TEST,
+					show : 'debugOnly'
 				}
 			];
 			this.$scope.section = $rootScope.currentSection;
@@ -48,6 +55,21 @@ module application {
 				
 					return true;		
 			}
+		}
+		
+		
+		/**
+		 * Help view method. Add "active" class on menu which is probably part od currentSection
+		 */
+		public showActiveClass(link) {
+			
+			if(this.$rootScope.currentSection.match(link)){
+				if(link == "/" && this.$rootScope.currentSection != "/"){
+					return false;
+				}
+				return true;
+			}
+			else return false;
 		}
 		
 		

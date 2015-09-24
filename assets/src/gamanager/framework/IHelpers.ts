@@ -19,4 +19,10 @@ module gamanager {
 		name: string,
 		type: string						
 	}
+	
+	export interface ParcialEntity {
+		isParcial():boolean;
+		
+		loadRest();
+	}
 }

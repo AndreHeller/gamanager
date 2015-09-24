@@ -1,18 +1,20 @@
 module util {
 	export class StringMap<V> {
-		private VALUES: {[key: string]: V;} = {};
+		private OBJECTS: {[key: string]: V;} = {};
 		private size: number = 0;
 		private NAMES: Array<string> = [];
+		private VALUES: Array<V> = [];
 		
 		
 		public put(key: string, value: V){
-			this.VALUES[key] = value;
+			this.OBJECTS[key] = value;
 			this.size++;
 			this.NAMES.push(key);
+			this.VALUES.push(value);
 		}
 		
 		public get(key: string): V{
-			return this.VALUES[key];
+			return this.OBJECTS[key];
 		}
 		
 		public names(): Array<string>{
@@ -23,10 +25,14 @@ module util {
 			return this.size;
 		}
 		
+		public toArray(){
+			return this.VALUES;
+		}
+		
 		public flush(){
 			this.NAMES = [];
 			this.size = 0;
-			this.VALUES = {};
+			this.OBJECTS = {};
 		}
 	}
 }

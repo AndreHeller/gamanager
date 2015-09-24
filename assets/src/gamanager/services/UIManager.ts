@@ -2,7 +2,7 @@
 module gamanager {
 	export class UIManager {
 		//Angular DI 
-		public static $inject = ['$rootScope','$document'];
+		public static $inject = ['$rootScope','$document','$log'];
 		
 		//Static types of alert, used in alert(msg, TYPE);
 		public static ALERT_SUCCESS: string = "success";
@@ -15,8 +15,8 @@ module gamanager {
 		private alertManager: AlertManager;
 		
 		
-		constructor(private $rootScope, private $document){
-			this.alertManager = new AlertManager($rootScope);
+		constructor(private $rootScope, private $document, private $log){
+			this.alertManager = new AlertManager($rootScope, $log);
 		} 
 		
 		
@@ -24,7 +24,7 @@ module gamanager {
 		 * Hide/Show User interface. If true, UI is hidden.
 		 */
 		public setLoading(loading: boolean): void{
-			console.log('UIManager: Setting loading mode to ' + loading);
+			this.$log.debug('UIManager: Setting loading mode to ' + loading);
 			
 			//Change class on BODY element, which is necessary for CSS animation
 			var generalElement = this.$document.find('body')[0];

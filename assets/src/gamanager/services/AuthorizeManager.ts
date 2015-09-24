@@ -9,6 +9,10 @@ module gamanager {
 										 'profile'];
 		
 		
+		constructor(private $log){
+			
+		}
+		
 		
 		public isAuthorized():boolean{
 			if(sessionStorage.getItem('gT')){
@@ -39,17 +43,18 @@ module gamanager {
 			
 			//Pokud uživatel během session už přihlášený byl, přihlásí ho na pozadí bez ukládání okna.
 			if(sessionStorage.getItem('gT')){
+				
 				authData.immediate = true;
 				this.clearToken();
 			}
 			
 			gapi.auth.authorize(authData, (response: GoogleApiOAuth2TokenObject) => {
 				if(response.error) {
-					console.error('ConnectionManager: Rejecting authorize.'); 
+					this.$log.error('AuthorizeManager: Rejecting authorize.'); 
 					d.reject(Strings.ERROR_NOT_AUTHORIZED);
 				}
 				else {
-					console.log('ConnectionManager: Fullfilling authorize.');
+					this.$log.debug('AuthorizeManager: Fullfilling authorize.');
 					this.saveToken(response);
 					d.fulfill(response);
 				}

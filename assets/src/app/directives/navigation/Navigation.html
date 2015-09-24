@@ -5,7 +5,7 @@
 		</div>
 		<div>
 			<ul class="nav navbar-nav" >
-				<li ng-if="vm.showMenu(menu.show)" ng-class="{'active': section == menu.link}" ng-repeat="menu in menus"><a ng-href="/#{{menu.link}}">{{menu.name}}</a></li>
+				<li ng-if="vm.showMenu(menu.show)" ng-class="{'active': vm.showActiveClass(menu.link)}" ng-repeat="menu in menus"><a ng-href="/#{{menu.link}}">{{menu.name}}</a></li>
 			</ul>
 		</div>
 		<div>

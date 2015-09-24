@@ -1,0 +1,33 @@
+<navigation></navigation>
+<h1 class="page-header">New Settings</h1>
+<p>Create new accounts settings. Just choose one:</p>
+<form>
+	<div class="form-group">
+		<div class="row">
+			<div class="col-md-10">
+				<!--<label for="">Choose account</label>-->
+				<select ng-model="selectedAccount" class="form-control" id="selectedAccount" name="selectedAccount">
+					<option value="{{account.id}}" ng-repeat="account in accounts">{{account.name}}</option>	
+				</select>
+			</div>
+			<div class="col-md-2">
+				<input ng-disabled="!selectedAccount" ng-click="vm.selectAccount(selectedAccount)" class="btn btn-primary" type="button" value="Vybrat">
+			</div>
+		</div>
+	</div>
+	<div ng-show="account">
+		<div class="row">
+			<div id="account">
+				<h2>{{account.name}}</h2>
+				<p>Account ID: {{account.id}}</p>
+			</div>
+		</div>
+		<div class="row">
+			<div id="properties">
+				<div ng-repeat="property in account.properties.toArray()">
+					Property Name: {{property.name}}
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
