@@ -294,7 +294,7 @@ declare module gapi.client.analytics.management{
         /**
          * 
          */
-        export function get({accountId, propertyId}): any;
+        export function get({accountId, webPropertyId}): any;
         
         /**
          * 
@@ -305,6 +305,36 @@ declare module gapi.client.analytics.management{
          * 
          */
         export function list({accountId: string}): any;
+        
+        /**
+         * 
+         */
+        export function patch(): any;
+        
+        /**
+         * 
+         */
+        export function update(): any;
+    }
+    
+    export module profiles {
+        
+        
+        
+        /**
+         * 
+         */
+        export function get({accountId, webPropertyId, profileId}): any;
+        
+        /**
+         * 
+         */
+        export function insert(): any;
+        
+        /**
+         * 
+         */
+        export function list({accountId, webPropertyId}): any;
         
         /**
          * 

@@ -1,5 +1,5 @@
 ///<reference path="../../reference.ts" />
-module gamanager {
+module application {
 	export class AlertManager {
 				
 		constructor(private $rootScope, private $log){

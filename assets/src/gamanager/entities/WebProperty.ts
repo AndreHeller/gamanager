@@ -1,22 +1,34 @@
 ///<reference path="../../reference.ts" />
 module gamanager {
 	/**
-	 * Instances of class {@code WebProperty} represent Google Analytics webproperty
-	 * with all possible properties and all Google Analytics profiles.
+	 * Instances of class WebProperty represent Google Analytics webproperty
+	 * with all possible profiles and settings
 	 *
 	 * @author  André Heller; anheller6gmail.com
 	 * @version 1.00 — 07/2015
 	 */
-	export class WebProperty implements ParcialEntity
+	export class WebProperty
 	{
 	//== CLASS ATTRIBUTES ==========================================================
 	//== INSTANCE ATTRIBUTES =======================================================
 		
 		//If account instance was filly filled or its still parcial
-		private parciality = true;
+		private _parciality = true;
 		
 		//Storage for profiles
 		private _profiles: util.StringMap<Profile> = new util.StringMap<Profile>();
+		
+		//Created date
+		private _created: Date;
+		
+		//Updated date
+		private _updated: Date;
+		
+		private _defaultProfileId: string;
+		
+		private _profileCount: number;
+		
+		private _websiteUrl: string;
 		
 	//== CLASS GETTERS AND SETTERS =================================================
 	//== OTHER NON-PRIVATE CLASS METHODS =========================================== 
@@ -34,8 +46,10 @@ module gamanager {
 			private _internalId: string,
 			private _level: string,
 			private _accountId: string,
-			profiles: Array<ParcialProfile>
+			profiles: Array<ParcialProfile>,
+			private $log
 		){
+			
 			for(var i: number = 0; i < profiles.length;i++){
 				this.createProfile(profiles[i]);
 			}
@@ -52,80 +66,123 @@ module gamanager {
 		}
 		
 		public get internalId(): string {
-			return this._id;
+			return this._internalId;
 		}
 		
 		//Standard / Premium
 		public get level(): string {
-			return this._id;
+			return this._level;
+		}
+		
+		public get created(): Date {
+			if(this.parciality){
+				throw new Error(Strings.ERROR_PARCIAL_INSTANCE);
+			}
+			return this._created;
+		}
+		
+		public get updated(): Date {
+			if(this.parciality){
+				throw new Error(Strings.ERROR_PARCIAL_INSTANCE);
+			}
+			return this._updated;
+		}
+		
+		public get defaultProfileId(): string {
+			if(this.parciality){
+				throw new Error(Strings.ERROR_PARCIAL_INSTANCE);
+			}
+			return this._defaultProfileId;
+		}
+		
+		public get profileCount(): number {
+			if(this.parciality){
+				throw new Error(Strings.ERROR_PARCIAL_INSTANCE);
+			}
+			return this._profileCount;
+		}
+		
+		public get websiteUrl(): string {
+			if(this.parciality){
+				throw new Error(Strings.ERROR_PARCIAL_INSTANCE);
+			}
+			return this._websiteUrl;
 		}
 		
 		public get profiles(): util.StringMap<Profile>{
 			return this._profiles;
 		}
-	
-	//== OTHER NON-PRIVATE INSTANCE METHODS ========================================
-	
-		/**
-		 * Returnn parciality. If instance already was fully loaded.
-		 */
-		public isParcial(): boolean{
-			return this.parciality;
+		
+		public get accountId(): string {
+			return this._accountId;
 		}
 		
-		
-		/**
-		 * Load the rest of instance if its parciality equals true.
-		 */
-		public loadRest(): boolean{
-			if(this.parciality){
-				//TODO - vyřešit problém absence get methody API
-				console.error('This method is not supported yet.');
-				return false;
-			}
-			else return false;
+		public get parciality(): boolean{
+			return this._parciality;
 		}
 		
+		public set parciality(value:boolean){
+			this._parciality = value;
+		}
+	
+	//== OTHER NON-PRIVATE INSTANCE METHODS ========================================	
 		
 		/**
-		 * Download full info of all properties of an account. Return promise.
+		 * Complete instance attributes and meka request for all properties
 		 */
-		public get(): Promises.Promise{
-			var d = new Promises.Deferred();
+		public completePropertyInfo(property: FullWebProperty): void {
+			this.created = property.created;
+			this.updated = property.updated;
+			this.defaultProfileId = property.defaultProfileId;
+			this.profileCount = property.profileCount;
+			this.websiteUrl = property.websiteUrl;
 			
-			if(this.isParcial){
-				gapi.client.analytics.management.webproperties.list(
-					{
-						'accountId': this._accountId,
-						'webPropertyId': this._id
-					}
-				)
-				.then(
-					(response) => {this.parciality = false;d.fulfill(response);},
-					(error) => {d.reject(error);}
-				);
+			this.$log.debug("WEBPROPERTY: Property saved!");
+		}
+		
+		
+		/**
+		 * Load the rest of instance if its parciality equals true or if optional param force equals true.
+		 */
+		public completeProfiles(force?: boolean): Promises.Promise{ 
+			
+			var d = new Promises.Deferred();
+			this.$log.debug("WEBPROPERTY: Starting complete profiles.\n- Force: " + force + "\n- Parciality: " + this.parciality);
+			
+			if(force || this.parciality){
+				this.$log.debug("WEBPROPERTY: Property is parcial");
+				
+				this.downloadProfiles().then(
+					(response) => {
+						 
+						 this.$log.debug("WEBPROPERTY: Starting save profiles info.");
+						 
+						 for(var i:number = 0; i < response.result.items.length; i++){
+							 var profile: Profile = this.profiles.get(response.result.items[i].id);
+							 
+							 this.$log.debug("WEBPROPERTY: Saving profile info: " + i);
+							 profile.completeProfileInfo(response.result.items[i]);
+							 profile.parciality = false;
+						 }
+						 
+						 this.$log.debug("WEBPROPERTY: Fullfill complete profile promise.");
+						 
+						 d.fulfill();
+					 },
+					 (err) => {
+						 this.$log.error("WEBPROPERTY: Reject complete profile promise");
+						 d.reject(err);
+					 }
+				 );
 			}
 			else {
-				d.reject(Strings.ERROR_PROPERTY_ALREADY_FULL);
+				this.$log.error("WEBPROPERTY: This property is already completed.");
+				//Aready completed								
+				d.reject(Strings.WARN_PROPERTY_COMPLETE);
 			}
-				
-			return d.promise();				
-		}
-		
-		
-		/**
-		 * Download full info of all properties of an account. Return promise.
-		 */
-		public list(): Promises.Promise{
-			var d = new Promises.Deferred();
 			
-			gapi.client.analytics.management.webproperties.list({'accountId':this._accountId})
-				.then(
-					(response) => {d.fulfill(response);},
-					(error) => {d.reject(error);}
-				);
-			
-			return d.promise();				
+			this.$log.debug("WEBPROPERTY: Return complete profiles promise.");
+			return d.promise();
 		}
 		
 		
@@ -136,16 +193,44 @@ module gamanager {
 		 * Creates a new profile(view) and put it into profiles stringMap. 
 		 */
 		private createProfile(profile: ParcialProfile): void{
-				this._profiles.put(
+				this.profiles.put(
 					profile.id, 
 					new Profile(
 						profile.id,
 						profile.name,
 						profile.type,
-						this._accountId,
-						this._id
+						this.accountId,
+						this.id,
+						this.$log
 					)
 				);
 			}
+		
+		
+		
+		/**
+		 * Make an API call for list all properties
+		 */
+		private downloadProfiles(): Promises.Promise{
+			
+			var d = new Promises.Deferred();
+			
+			this.$log.debug("WEBPROPERTY: Contact API for profile list.");
+			
+			gapi.client.analytics.management.profiles.list({'accountId': this.accountId,'webPropertyId':this.id}).then(
+				(response) => {
+					this.$log.debug("WEBPROPERTY: Fulfill profile list promise.");
+					d.fulfill(response);
+				},
+				(response) => {
+					this.$log.debug("WEBPROPERTY: Reject profile list promise.");
+					d.reject(response);
+				}
+			);
+			
+			this.$log.debug("WEBPROPERTY: Return profile list promise");
+			
+			return d.promise();			
 		}
 	}
+}

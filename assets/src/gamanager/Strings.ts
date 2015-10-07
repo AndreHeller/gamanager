@@ -9,7 +9,13 @@ module gamanager{
 		public static ERROR_ACCOUNT_SUMMARIES_SAVE: string = 'Nepodařilo s uložit informace o všech účtech.';
 		
 		
-		public static ERROR_PROPERTY_ALREADY_FULL: string = "Toto webové property je již kompletně stažené.";
+		public static ERROR_PARCIAL_INSTANCE: string = "Tato instance zatím nebyla stežena celá. Tuto metodu nelze použít.";
+		
+		
+		public static WARN_PROPERTY_COMPLETE: string = "Toto webové property je již kompletně stažené.";
+		public static WARN_ACCOUNT_COMPLETE: string = "";
+		
+		
 		
 		
 		

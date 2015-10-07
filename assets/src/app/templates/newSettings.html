@@ -20,12 +20,30 @@
 			<div id="account">
 				<h2>{{account.name}}</h2>
 				<p>Account ID: {{account.id}}</p>
+				<p>Created: {{account.created}}</p>
+				<p>Updated: {{account.updated}}</p>
 			</div>
 		</div>
+		<hr>
 		<div class="row">
 			<div id="properties">
-				<div ng-repeat="property in account.properties.toArray()">
-					Property Name: {{property.name}}
+				<div ng-repeat="property in account.properties">
+					<p>Property Name: {{property.name}}</p>
+					<p>Property Id: {{property.id}}</p>
+					<p>Property Internal Id: {{property.internalId}}</p>
+					<p>Property Level: {{property.level}}</p>
+					<p>Property Default Profile Id: {{property.defaultProfileId}}</p>
+					<p>Created: {{property.created}}</p>
+					<p>Updated: {{property.updated}}</p>
+					<p>Profiles Count: {{property.profilesCount}}</p>
+					<hr>
+					<div ng-repeat="profile in property.profiles">
+						<p>Profile Name: {{profile.name}}</p>
+						<p>Profile Id: {{profile.id}}</p>
+						<p>Profile Type: {{profile.type}}</p>
+						<p>Created: {{profile.created}}</p>
+						<p>Updated: {{profile.updated}}</p>
+					</div>
 				</div>
 			</div>
 		</div>

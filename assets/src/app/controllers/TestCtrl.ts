@@ -8,12 +8,12 @@ module application {
 			this.$scope.vm = this;
 			
 			
-			var account: gamanager.Account = this.am.getAccount('40454771');
+			/*var account: gamanager.Account = this.am.getAccount('40454771');
 			
-			var property: gamanager.WebProperty = account.properties.get('UA-40454771-1');
+			var property: gamanager.WebProperty = account.properties.get('UA-40454771-1');*/
 			
 			
-			property.get().then((param) => {console.log(param);});
+			this.$scope.name = "ahoj";
 		}
 	}
 }

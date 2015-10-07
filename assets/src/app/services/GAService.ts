@@ -1,6 +1,6 @@
-///<reference path="../reference.ts" />
-module gamanager {	
-	export class AppManager{
+///<reference path="../../reference.ts" />
+module application.services {	
+	export class GAService{
 		
 		//Angular DI
 		public static $inject = ['$rootScope','$log'];

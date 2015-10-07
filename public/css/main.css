@@ -17,6 +17,11 @@ a {
     padding: 10px 15px;
 }
 
+.alert{
+    z-index: 2000 !important;
+}
+
+
 
 
 

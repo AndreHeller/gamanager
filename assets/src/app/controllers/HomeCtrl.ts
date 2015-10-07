@@ -7,11 +7,11 @@ module application {
 		
 		constructor(
 			private $scope: any, 
-			private $location,
-			private $log,
-			private $rootScope,
-			private $document,
-			private $timeout, 
+			private $location: ng.ILocationService,
+			private $log: ng.ILogService,
+			private $rootScope: any,
+			private $document: ng.IDocumentService,
+			private $timeout: ng.ITimeoutService, 
 			private am: gamanager.AppManager,
 			private uim: gamanager.UIManager			
 		){
@@ -19,9 +19,9 @@ module application {
 			this.$log.debug('HomeCtrl: Prepared!');
 			
 			//Dočasně zapne přihlášení bez zmáčknutí tlačítka
-			$document.ready(function () {
+			/*$document.ready(function () {
 				$scope.vm.authorize();
-			});
+			});*/
 
 			  
 		}
@@ -40,14 +40,17 @@ module application {
 				this.uim.setLoading(true); 
 				
 				var timeout = this.$timeout(
-					(param)=>{
-						this.uim.setLoading(param);
-						this.uim.alert(gamanager.Strings.ERROR_REQUEST_TIMEOUT);
+					() => {
+						return false; //loading = false	
 					},
 					5000, //Timeout
-					true, //Use $apply
-					false //setLoading false
+					true //Use $apply
 				);
+				
+				timeout.then((param) => {
+					this.uim.setLoading(param);
+					this.uim.alert(gamanager.Strings.ERROR_REQUEST_TIMEOUT);
+				});
 				
 				
 				//Delegate on ApplicationManager
@@ -56,8 +59,8 @@ module application {
 						//If OK
 						() => {
 							this.$timeout.cancel(timeout);	
-							this.$log.debug('AppManager: Redirenting at "/accounts" page');
-							this.$location.path(Routes.NEW_SETTINGS).replace(); //DOČASNĚ PŘESMĚROVÁVÁ NA NOVÉ NSATVENÍ
+							this.$log.debug('AppManager: Redirecting at "/accounts" page');
+							this.$location.path(Routes.ACCOUNTS).replace(); 
 							this.$scope.$apply();
 							
 							//Report Success

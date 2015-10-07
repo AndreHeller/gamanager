@@ -5,16 +5,16 @@
 
 
 ///<reference path="./gamanager/Strings.ts" />
-///<reference path="./gamanager/AppManager.ts" />
+///<reference path="./app/services/GAService.ts" />
+///<reference path="./app/services/UIService.ts" />
+///<reference path="./app/services/AlertManager.ts" />
 
-///<reference path="./gamanager/services/ConnectionManager.ts" />
-///<reference path="./gamanager/services/AccountManager.ts" />
-///<reference path="./gamanager/services/UIManager.ts" />
-///<reference path="./gamanager/services/AlertManager.ts" />
-///<reference path="./gamanager/services/AuthorizeManager.ts" />
-///<reference path="./gamanager/services/ExceptionManager.ts" />
+///<reference path="./gamanager/model/ConnectionManager.ts" />
+///<reference path="./gamanager/model/AccountManager.ts" />
+///<reference path="./gamanager/model/AuthorizeManager.ts" />
+///<reference path="./gamanager/model/ExceptionManager.ts" />
 
-///<reference path="./gamanager/framework/IHelpers.ts" />
+///<reference path="./gamanager/framework/Interfaces.ts" />
 
 ///<reference path="./gamanager/entities/Account.ts" />
 ///<reference path="./gamanager/entities/WebProperty.ts" />

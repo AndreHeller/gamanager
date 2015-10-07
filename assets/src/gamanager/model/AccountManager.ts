@@ -13,13 +13,14 @@ module gamanager {
 		/********************************************************************
 		 * Factory method for creating accounts
 		 */
-		private createAccount(account: ParcialAccount){
+		private createAccount(account: ParcialAccount): void{
 			this.ACCOUNTS.put(
 					account.id, 
 					new Account( 
 						account.id, 
 						account.name, 
-						account.webProperties
+						account.webProperties,
+						this.$log
 					)
 			);
 		}
@@ -33,10 +34,10 @@ module gamanager {
 		}
 		
 		
-		/***********************************************************************
+		/**
 		 * Returns account by its number.
 		 */
-		public getAccount(accountId: string):Account{
+		public getAccount(accountId: string): Account{
 			return this.ACCOUNTS.get(accountId);
 		}
 		
@@ -72,25 +73,25 @@ module gamanager {
 		}
 		
 		
-		/********************************************************************************
+		/**
 		 * Proiteruje data v parametru a vytvoří jednotlivé instance všech ÚČTŮ, PROPERTY A PROFILŮ. Parametr by mě odpovídat tomu co vrátí APi na základě metody requestAccountSUmmaries()
 		 */
-		public saveAccountSummaries(data): Promises.Promise{
+		public saveAccountSummaries(data: any): Promises.Promise {
 			this.$log.debug('AccountManager: Starting save accountsummaries info.');
 			var accounts: Array<ParcialAccount> = data.result.items,
 				d = new Promises.Deferred;
 			
-			for(var i:number = 0; i<accounts.length; i++){
+			for(var i:number = 0; i < accounts.length; i++){
 				this.createAccount(accounts[i]);
 			}
 			
-			if(this.ACCOUNTS.getSize() == accounts.length){
+			if(this.ACCOUNTS.getSize() === accounts.length){
 				this.$log.debug('AccountManager: Fillfiling save accountsummaries info.');
 				d.fulfill();
 			}
 			else{
 				this.$log.error('AccountManager: Rejecting save accountsummaries info.');
-				d.reject(Strings.ERROR_ACCOUNT_SUMMARIES_SAVE)
+				d.reject(Strings.ERROR_ACCOUNT_SUMMARIES_SAVE);
 			}
 			
 			this.$log.debug('AccountManager: Returning save accountsummaries info.');
@@ -101,7 +102,8 @@ module gamanager {
 		/**
 		 * Delete all accounts data.
 		 */
-		public deleteAllAccounts(){
+		public deleteAllAccounts(): void{
+			debugger;
 			this.ACCOUNTS.flush();
 		}
 	}

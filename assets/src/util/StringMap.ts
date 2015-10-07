@@ -33,6 +33,7 @@ module util {
 			this.NAMES = [];
 			this.size = 0;
 			this.OBJECTS = {};
+			this.VALUES = [];
 		}
 	}
 }

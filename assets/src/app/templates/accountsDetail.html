@@ -1,7 +1,66 @@
 <navigation></navigation>
-<h1 class="page-header">Profile Detail</h1>
-<div>
-	<p>Account: {{accountId}}</p>
-	<p>Property: {{propertyId}}</p>
-	<p>Profile: {{profileId}}</p>
+<h1 class="page-header">Explorer</h1>
+<div class="panel" ng-class="{'panel-default': account.parciality, 'panel-primary': !account.parciality}">
+	<div class="panel-heading">
+		<div class="pull-right" ng-if="account.parciality">
+			<p>
+				<strong class="text-danger">This account is <abbr title="All accounts are only partially downloaded due to savings limits of Google API. Click the button to download remaining information.">incomplete</abbr>!</strong>
+				<button class="btn btn-danger" ng-click="vm.loadRest()">Fill rest!</button>
+			</p>
+		</div>
+		<h4>{{account.name}} &raquo; {{property.name}} &raquo; {{profile.name}}</h4>
+		<div class="clearfix" ng-if="account.parciality"></div>
+		
+	</div>	
+</div>
+<div class="panel list-group">
+	<div class="list-group-item"> 
+		<div class="pull-right">{{property.id}}</div>
+		<div class="list-group-item-heading"><strong>{{property.name}}</strong></div>
+		<div class="clearfix" style="display: none"></div> 
+
+	
+		<table class="table">
+			<tr>
+				<th>Level</th>
+				<td>{{property.name}}</td>
+			</tr>
+			<tr>
+				<th>Internal ID</th>
+				<td>{{property.internalId}}</td>
+			</tr>
+			<tr ng-if="!property.parciality">
+				<th>Created</th>
+				<td>{{property.created | date}}</td>
+			</tr>
+			<tr ng-if="!property.parciality">
+				<th>Updated</th>
+				<td>{{property.updated | date}}</td>
+			</tr>
+			<tr ng-if="!property.parciality">
+				<th>Default Profile Id</th>
+				<td>{{property.defaultProfileId}}</td>
+			</tr>
+			<tr ng-if="!property.parciality">
+				<th>Profile count</th>
+				<td>{{property.profileCount}}</td>
+			</tr>
+			<tr ng-if="!property.parciality">
+				<th>Website URL</th>
+				<td>{{property.websiteUrl}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		{{profile.name}}
+	</div>
+	
+	<table class="table">
+		<tr>
+			<th>Type</th>
+			<td>{{profile.type}}</td>
+		</tr>
+	</table>
 </div>
