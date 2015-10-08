@@ -21,8 +21,7 @@
   <loader></loader>
   
   <div class="container">
-
-    <alerts></alerts>
+    <alert ng-repeat="alert in $root.alerts" type="{{alert.type}}" close="alert.close" icon="{{alert.icon}}">{{alert.msg}}</alert>
     
     <div ng-view></div>
   </div>

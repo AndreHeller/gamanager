@@ -1,64 +1,61 @@
 ///<reference path="../../reference.ts" />
 module application {
-	export class HomeCtrl {
+	/**
+	 * Class HomeCtrl represents default controller for default application View.
+	 * It shows login page when user is logged off and also some summary info 
+	 * about application state 
+	 *
+	 * @author  André Heller; anheller6gmail.com
+	 * @version 1.00 — 07/2015
+	 */
+	export class HomeCtrl 
+	{
+	//== CLASS ATTRIBUTES ==========================================================	
 		
-		//Angular DI
-		public static $inject = ['$scope','$location','$log','$rootScope','$document','$timeout','AppManager','UIManager'];
+		public static $inject = ['$scope','$location','$log','$rootScope'/*,'GAService'*/,'UIService'];
+		
+	//== INSTANCE ATTRIBUTES =======================================================	
+	//== CLASS GETTERS AND SETTERS =================================================
+	//== OTHER NON-PRIVATE CLASS METHODS =========================================== 
+	
+	//##############################################################################
+	//== CONSTUCTORS AND FACTORY METHODS ===========================================	
 		
 		constructor(
 			private $scope: any, 
 			private $location: ng.ILocationService,
 			private $log: ng.ILogService,
 			private $rootScope: any,
-			private $document: ng.IDocumentService,
-			private $timeout: ng.ITimeoutService, 
-			private am: gamanager.AppManager,
-			private uim: gamanager.UIManager			
+			/*private ga: services.GAService,*/
+			private ui: services.UIService
 		){
 			this.$scope.vm = this;
-			this.$log.debug('HomeCtrl: Prepared!');
+			this.$log.debug('HomeCtrl: Prepared!');  
 			
-			//Dočasně zapne přihlášení bez zmáčknutí tlačítka
-			/*$document.ready(function () {
-				$scope.vm.authorize();
-			});*/
-
-			  
+			this.ui.showAlert('aaa');
 		}
 		
+	//== INSTANCE GETTERS AND SETTERS ==============================================
+	//== OTHER NON-PRIVATE INSTANCE METHODS ========================================		
 		
 		/**
 		 * Authorize User, load his info aind initialize application
 		 * (load Analytics library, get first request for accounts summeries 
-		 * and redireft to /accounts)
+		 * and redirect to /accounts)
 		 */
 		public authorize(): void{
 			if(!this.$rootScope.loggedUser.logged){
 				this.$log.debug('HomeCtrl: Running inicialization.');
 			
 				//Hide UserInterface  
-				this.uim.setLoading(true); 
-				
-				var timeout = this.$timeout(
-					() => {
-						return false; //loading = false	
-					},
-					5000, //Timeout
-					true //Use $apply
-				);
-				
-				timeout.then((param) => {
-					this.uim.setLoading(param);
-					this.uim.alert(gamanager.Strings.ERROR_REQUEST_TIMEOUT);
-				});
-				
+				this.ui.setLoading(true); 
 				
 				//Delegate on ApplicationManager
-				this.am.authorize()
+				/*this.ga.authorize()
 					.then(
 						//If OK
 						() => {
-							this.$timeout.cancel(timeout);	
+								
 							this.$log.debug('AppManager: Redirecting at "/accounts" page');
 							this.$location.path(Routes.ACCOUNTS).replace(); 
 							this.$scope.$apply();
@@ -75,17 +72,20 @@ module application {
 						},
 						//If error
 						(error) => {
-							this.$timeout.cancel(timeout);
 							this.$log.error('HomeCtrl: Handling Error:');
 							this.$log.debug(error);
 							//Report Error
 							this.uim.alert(error);
 							//Reset UI
 							this.uim.setLoading(false);
-							String
 						}
-					);
+					);*/
 			}
 		}
+		
+	//== PRIVATE AND AUXILIARY CLASS METHODS =======================================
+	//== PRIVATE AND AUXILIARY INSTANCE METHODS ====================================
+	
+				
 	}
 }

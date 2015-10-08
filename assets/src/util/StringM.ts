@@ -1,4 +1,9 @@
 module StringF{
+	
+	export function capitalizeFirstLetter(string): string {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	
 	export function format(...args: any[]):any {
 			//  discuss at: http://phpjs.org/functions/sprintf/
 			// original by: Ash Searle (http://hexmen.com/blog/)

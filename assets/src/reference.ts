@@ -7,7 +7,7 @@
 ///<reference path="./gamanager/Strings.ts" />
 ///<reference path="./app/services/GAService.ts" />
 ///<reference path="./app/services/UIService.ts" />
-///<reference path="./app/services/AlertManager.ts" />
+///<reference path="./app/services/AlertService.ts" />
 
 ///<reference path="./gamanager/model/ConnectionManager.ts" />
 ///<reference path="./gamanager/model/AccountManager.ts" />
@@ -36,4 +36,4 @@
 ///<reference path="./app/directives/navigation/Navigation.ts" />
 ///<reference path="./app/directives/navigation/NavigationCtrl.ts" />
 ///<reference path="./app/directives/loader/Loader.ts" />
-///<reference path="./app/directives/alerts/Alerts.ts" />
+///<reference path="./app/directives/alert/Alert.ts" />

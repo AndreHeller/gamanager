@@ -11,13 +11,13 @@ module application {
 	 * Route settings. Failsafe before unlogged user.
 	 */ 
 	app.config(($routeProvider, $logProvider) => {
-		$logProvider.debugEnabled(false);
+		$logProvider.debugEnabled(true);
 		$routeProvider
 			.when(Routes.HOME, { 
 				controller: HomeCtrl,
 				templateUrl: 'app/templates/home.html'
 			}) 
-			.when(Routes.ACCOUNTS,{ 
+			/*.when(Routes.ACCOUNTS,{ 
 				controller: AccountsCtrl,
 				templateUrl: 'app/templates/accounts.html'
 			})
@@ -32,21 +32,19 @@ module application {
 			.when(Routes.TEST,{
 				controller: TestCtrl,
 				templateUrl: 'app/templates/test.html'
-			})
+			})*/
 			.otherwise({redirectTo: '/'}) 
 	})
 	.run(function($rootScope, $location, $log) {
 		
 		// Initiate system variables
 		$rootScope.loggedUser = {};
-		$rootScope.alerts = [];
 		 
-		
 		
 		// register listener to watch route changes
 		$rootScope.$on("$routeChangeStart", (event, next, current) => {
-			//Clear all alerts
-			$rootScope.alerts = [];
+			
+			
 			//Set current section
 			$rootScope.currentSection = next.$$route.originalPath;
 			
@@ -69,12 +67,12 @@ module application {
 	/*
 	 * Directives & services & controllers
 	 */
+	app.service('UIService', services.UIService)
+	.factory('alertService', services.AlertService);
+	   /*.service('GAService', services.GAService)*/;
 	
-	app.service('AppManager', services.GAService)
-	   .service('UIManager', services.UIService);
-	
-	app.directive('navigation', directives.Navigation)
+	app/*.directive('navigation', directives.Navigation)*/
 	   .directive('loader', directives.Loader)
-	   .directive('alerts', directives.Alerts);
+	   .directive('alert', directives.Alert);
 	   
 }

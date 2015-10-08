@@ -13,7 +13,7 @@ module application {
 			var property: gamanager.WebProperty = account.properties.get('UA-40454771-1');*/
 			
 			
-			this.$scope.name = "ahoj";
+			this.$scope.name = "ahoj"; 
 		}
 	}
 }
