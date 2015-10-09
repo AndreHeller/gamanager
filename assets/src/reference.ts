@@ -8,6 +8,7 @@
 ///<reference path="./app/services/GAService.ts" />
 ///<reference path="./app/services/UIService.ts" />
 ///<reference path="./app/services/AlertService.ts" />
+///<reference path="./app/services/LoaderService.ts" />
 
 ///<reference path="./gamanager/model/ConnectionManager.ts" />
 ///<reference path="./gamanager/model/AccountManager.ts" />

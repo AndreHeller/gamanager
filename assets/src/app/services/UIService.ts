@@ -17,7 +17,7 @@ module application.services {
 	//== CLASS ATTRIBUTES ==========================================================
 			
 		//Angular DI 
-		public static $inject = ['$rootScope','$document','$log','$timeout','alertService'];
+		public static $inject = ['$rootScope','$log','$timeout','alertService','loaderService'];
 		
 	//== INSTANCE ATTRIBUTES =======================================================		
 		
@@ -33,11 +33,11 @@ module application.services {
 	//== CONSTUCTORS AND FACTORY METHODS =========================================== 	
 		
 		constructor(
-			private $rootScope: any, 
-			private $document: ng.IDocumentService, 
+			private $rootScope: any,  
 			private $log: ng.ILogService,
 			private $timeout: ng.ITimeoutService,
-			private alert: services.AlertService
+			private alert: services.AlertService,
+			private loader: services.LoaderService
 		){
 			
 		} 
@@ -46,38 +46,43 @@ module application.services {
 	//== INSTANCE GETTERS AND SETTERS ==============================================
 	//== OTHER NON-PRIVATE INSTANCE METHODS ========================================		
 		
-		/**
-		 * Hide/Show User interface. If true, UI is hidden.
+		/** 
+		 * Hide the loader. 
 		 */
-		public setLoading(loading: boolean): void{
-			this.$log.debug('UIManager: Setting loading mode to ' + loading);		
+		public hideLoader(){
+			this.showLoader(false);
+		}
+		
+		
+		/**
+		 * Hide/Show User interface. If true, loader is visible (default)
+		 */
+		public showLoader(loading?: boolean): void{
 			
-			//Change class on BODY element, which is necessary for CSS animation
-			var generalElement = this.$document.find('body')[0];
+			loading = typeof loading  == "undefined" ? true : loading;
+			
+			this.$log.debug('UIManager: Setting loading mode to ' + loading);		
 			
 			//Hide UI
 			if(loading){
-				this.loadingTimeoutPromise = this.setLoadingTimeout();
-				this.addClass(generalElement, 'loading');
+				this.loadingTimeoutPromise = this.$timeout
+				(
+					(param) => {
+						this.showLoader();
+						this.showAlert(gamanager.Strings.ERROR_REQUEST_TIMEOUT);
+					},
+					5000 //Timeout
+				);
+				
+				this.loader.showLoader();
 			}
 			//Re-Open UI
 			else {
 				this.$timeout.cancel(this.loadingTimeoutPromise);
 				this.loadingTimeoutPromise = null;
 				
-				this.removeClass(generalElement, 'loading');
-				this.addClass(generalElement, 'loaded');
-				
-				this.$timeout(
-					() => {
-						this.removeClass(generalElement,'loaded')
-					},
-					3000
-				);
+				this.loader.hideLoader();
 			}
-			
-			//Set state for getLoading method
-			this.loadingState = loading
 		}
 		
 		
@@ -94,7 +99,7 @@ module application.services {
 			
 			this.$log.debug('AlertManager: Handling ' + type);
 			
-			var alert: Alert = this.alert.add(type, msg);
+			var alert: Alert = this.alert.addAlert(type, msg);
 
 			if(timeout){
 				this.$timeout(
@@ -107,65 +112,6 @@ module application.services {
 		}
 		
 	//== PRIVATE AND AUXILIARY CLASS METHODS =======================================
-	//== PRIVATE AND AUXILIARY INSTANCE METHODS ====================================		
-		
-		/** 
-		 * Set timeout when loading screen switch back to false and throw a timout error
-		 */
-		private setLoadingTimeout(time?: number): ng.IPromise<any>{
-			time = time || 30000; //30 sec
-			
-			return this.$timeout(
-					(param) => {
-						this.setLoading(param);
-						this.showAlert(gamanager.Strings.ERROR_REQUEST_TIMEOUT);
-					},
-					5000, //Timeout
-					true, //Use $apply
-					false // loading = false
-			);
-			
-		}
-		
-		
-		/**
-		 * Add class to an element. Return false if there already is one.
-		 */
-		private addClass(element: HTMLElement, className: string): boolean{
-			if(!element.className.search(new RegExp(".*" + className + ".*"))){
-				return false;
-			}
-			else {
-				element.className += " " + className;
-				return true; 
-			}
-		};
-		
-		
-		/**
-		 * Remove class from an alement. return false of there is no class.
-		 */
-		private removeClass(element: HTMLElement, className: string): boolean{
-			if(element.className.search(new RegExp(".*" + className + ".*"))){
-				return false; 
-			}
-			else {
-				var finalClassName: string = "",
-					classes = element.className.split(' ');
-				
-				for(var i: number; i < classes.length; i++){
-					if(classes[i] != className){
-						finalClassName += " " + classes[i];
-					}
-					else {
-						//never should happen
-						return false
-					}		                 
-				}	
-				
-				element.className = finalClassName;	
-				return true;
-			}
-		}
+	//== PRIVATE AND AUXILIARY INSTANCE METHODS ====================================	
 	}
 }
