@@ -30,9 +30,8 @@ module application {
 			private ui: services.UIService
 		){
 			this.$scope.vm = this;
-			this.$log.debug('HomeCtrl: Prepared!');  
-			
-			this.ui.showAlert('aaa');
+			this.$log.debug('HomeCtrl: Prepared!');	
+					
 		}
 		
 	//== INSTANCE GETTERS AND SETTERS ==============================================
@@ -48,7 +47,7 @@ module application {
 				this.$log.debug('HomeCtrl: Running inicialization.');
 			
 				//Hide UserInterface  
-				this.ui.setLoading(true); 
+				this.ui.showLoader(); 
 				
 				//Delegate on ApplicationManager
 				/*this.ga.authorize()

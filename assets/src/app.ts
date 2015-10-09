@@ -11,7 +11,10 @@ module application {
 	 * Route settings. Failsafe before unlogged user.
 	 */ 
 	app.config(($routeProvider, $logProvider) => {
+		
+		
 		$logProvider.debugEnabled(true);
+		
 		$routeProvider
 			.when(Routes.HOME, { 
 				controller: HomeCtrl,
@@ -39,6 +42,9 @@ module application {
 		
 		// Initiate system variables
 		$rootScope.loggedUser = {};
+		
+		// Sets the enviromanet (debug, production)
+		$rootScope.enviroment = "debug";
 		 
 		
 		// register listener to watch route changes
@@ -72,7 +78,7 @@ module application {
 	   .service('loaderService', services.LoaderService)
 	   /*.service('GAService', services.GAService)*/;
 	
-	app/*.directive('navigation', directives.Navigation)*/
+	app.directive('navigation', directives.Navigation)
 	   .directive('loader', directives.Loader)
 	   .directive('alert', directives.Alert);
 	   
