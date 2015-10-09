@@ -24,7 +24,7 @@ module application.services {
 	{
 	//== CLASS ATTRIBUTES ==========================================================
 				
-		public static $inject = ['$rootScope', '$log', '$timeout'];	
+		public static $inject = ['$rootScope'];	
 		
 		// Static types of Alerts
 		public static OK = "success";
@@ -39,7 +39,7 @@ module application.services {
 	//##############################################################################
 	//== CONSTUCTORS AND FACTORY METHODS ===========================================			
 				
-		constructor(private $rootScope, private $log, private $timeout){
+		constructor(private $rootScope){
 			$rootScope.alerts = [];
 			
 			return this; //Must return because this service is angular factory
@@ -51,7 +51,7 @@ module application.services {
 		/**
 		 * Add and show new alert.
 		 */ 
-		public add = function(type: string, msg: string): Alert {
+		public addAlert = function(type: string, msg: string): Alert {
 			var alert: Alert = {			
 				type: type,
 				msg: msg,

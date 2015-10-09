@@ -68,7 +68,8 @@ module application {
 	 * Directives & services & controllers
 	 */
 	app.service('UIService', services.UIService)
-	.factory('alertService', services.AlertService);
+	   .factory('alertService', services.AlertService)
+	   .service('loaderService', services.LoaderService)
 	   /*.service('GAService', services.GAService)*/;
 	
 	app/*.directive('navigation', directives.Navigation)*/
