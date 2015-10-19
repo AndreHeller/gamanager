@@ -1,4 +1,4 @@
-///<reference path="../../reference.ts" />
+///<reference path='../../reference.ts' />
 module application.services {
 	/**
 	 * Class UIService represents service which controls user interface. 
@@ -12,12 +12,11 @@ module application.services {
 	 * @author  André Heller; anheller6gmail.com
 	 * @version 3.00 — 07/2015
 	 */
-	export class UIService
-	{
+	export class UIService {
 	//== CLASS ATTRIBUTES ==========================================================
 			
 		//Angular DI 
-		public static $inject = ['$rootScope','$log','$timeout','alertService','loaderService'];
+		public static $inject = ['$rootScope', '$log', '$timeout', 'alertService', 'loaderService'];
 		
 	//== INSTANCE ATTRIBUTES =======================================================		
 		
@@ -38,7 +37,7 @@ module application.services {
 			private $timeout: ng.ITimeoutService,
 			private alert: services.AlertService,
 			private loader: services.LoaderService
-		){
+		) {
 			
 		} 
 		
@@ -49,7 +48,7 @@ module application.services {
 		/** 
 		 * Hide the loader. 
 		 */
-		public hideLoader(){
+		public hideLoader() {
 			this.showLoader(false);
 		}
 		
@@ -57,27 +56,26 @@ module application.services {
 		/**
 		 * Hide/Show User interface. If true, loader is visible (default)
 		 */
-		public showLoader(loading?: boolean): void{
+		public showLoader(loading?: boolean): void {
 			
-			loading = typeof loading  == "undefined" ? true : loading;
+			loading = typeof loading === 'undefined' ? true : loading;
 			
 			this.$log.debug('UIManager: Setting loading mode to ' + loading);		
 			
 			//Hide UI
-			if(loading){
+			if (loading) {
 				this.loadingTimeoutPromise = this.$timeout
 				(
 					(param) => {
-						this.showLoader();
+						this.hideLoader();
 						this.showAlert(gamanager.Strings.ERROR_REQUEST_TIMEOUT);
 					},
-					5000 //Timeout
+					30000 //Timeout
 				);
 				
 				this.loader.showLoader();
-			}
-			//Re-Open UI
-			else {
+			} else {
+				//Re-Open UI
 				this.$timeout.cancel(this.loadingTimeoutPromise);
 				this.loadingTimeoutPromise = null;
 				
@@ -94,20 +92,20 @@ module application.services {
 		 * The other optional parameter is close timeout in milliseconds. 
 		 * Without them the alert never hide itself.
 		 */
-		public showAlert(msg: string, type?: string, timeout?: number){
-			type = type || "danger";
+		public showAlert(msg: string, type?: string, timeout?: number) {
+			type = type || 'danger';
 			
 			this.$log.debug('AlertManager: Handling ' + type);
 			
 			var alert: Alert = this.alert.addAlert(type, msg);
 
-			if(timeout){
+			if (timeout) {
 				this.$timeout(
 					() => {
-						this.alert.closeAlert(alert)
+						this.alert.closeAlert(alert);
 					},
 					timeout
-				)
+				);
 			}
 		}
 		

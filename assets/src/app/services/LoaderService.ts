@@ -1,4 +1,4 @@
-///<reference path="../../reference.ts" />
+///<reference path='../../reference.ts' />
 module application.services {
 	/**
 	 * Class LoaderService represent sercice which managaing loading screen. 
@@ -7,11 +7,10 @@ module application.services {
 	 * @author  André Heller; anheller6gmail.com
 	 * @version 1.00 — 07/2015
 	 */
-	export class LoaderService
-	{
+	export class LoaderService {
 	//== CLASS ATTRIBUTES ==========================================================
 	
-		public static $inject = ['$document','$timeout'];
+		public static $inject = ['$document', '$timeout'];
 	
 	//== INSTANCE ATTRIBUTES =======================================================
 	
@@ -30,7 +29,7 @@ module application.services {
 		constructor(
 			private $document: ng.IDocumentService,
 			private $timeout: ng.ITimeoutService
-		){
+		) {
 		
 		}
 	
@@ -41,15 +40,14 @@ module application.services {
 		 * Show loader. Return false if loader is already visible;
 		 */
 		public showLoader(): boolean {
-			if(!this.loadingState){		
+			if (!this.loadingState ) {		
 				
 				this.addClass(this.generalElement, 'loading');
 				
 				this.loadingState = true;
 				
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
@@ -59,13 +57,13 @@ module application.services {
 		 * Hide loader. Return false if loader is already hide.
 		 */
 		public hideLoader(): boolean {
-			if(this.loadingState){
+			if (this.loadingState) {
 				this.removeClass(this.generalElement, 'loading');
 				this.addClass(this.generalElement, 'loaded');
 				
 				this.$timeout(
 					() => {
-						this.removeClass(this.generalElement,'loaded')
+						this.removeClass(this.generalElement, 'loaded');
 					},
 					3000
 				);
@@ -73,8 +71,7 @@ module application.services {
 				this.loadingState = false;
 				
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
@@ -85,12 +82,11 @@ module application.services {
 		/**
 		 * Add class to an element. Return false if there already is one.
 		 */
-		private addClass(element: HTMLElement, className: string): boolean{
-			if(!element.className.search(new RegExp(".*" + className + ".*"))){
+		private addClass(element: HTMLElement, className: string): boolean {
+			if (!element.className.search(new RegExp('.*' + className + '.*'))) {
 				return false;
-			}
-			else {
-				element.className += " " + className;
+			} else {
+				element.className += ' ' + className;
 				return true; 
 			}
 		};
@@ -99,21 +95,19 @@ module application.services {
 		/**
 		 * Remove class from an alement. return false of there is no class.
 		 */
-		private removeClass(element: HTMLElement, className: string): boolean{
-			if(element.className.search(new RegExp(".*" + className + ".*"))){
+		private removeClass(element: HTMLElement, className: string): boolean {
+			if (element.className.search(new RegExp('.*' + className + '.*'))) {
 				return false; 
-			}
-			else {
-				var finalClassName: string = "",
+			} else {
+				var finalClassName: string = '',
 					classes = element.className.split(' ');
 				
-				for(var i: number; i < classes.length; i++){
-					if(classes[i] != className){
-						finalClassName += " " + classes[i];
-					}
-					else {
+				for (var i: number; i < classes.length; i++) {
+					if (classes[i] !== className) {
+						finalClassName += ' ' + classes[i];
+					} else {
 						//never should happen
-						return false
+						return false;
 					}		                 
 				}	
 				

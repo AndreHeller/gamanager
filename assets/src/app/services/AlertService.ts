@@ -10,7 +10,7 @@ module application.services {
 		type: string;
 		msg: string;
 		icon: string;
-		close?: Function
+		close?: Function;
 	}
 	
 	/**
@@ -20,17 +20,16 @@ module application.services {
 	 * @author  André Heller; anheller6gmail.com
 	 * @version 2.00 — 07/2015
 	 */
-	export class AlertService
-	{
+	export class AlertService {
 	//== CLASS ATTRIBUTES ==========================================================
 				
 		public static $inject = ['$rootScope'];	
 		
 		// Static types of Alerts
-		public static OK = "success";
-		public static INFO = "info";
-		public static WARNING = "warning";
-		public static ERROR = "danger";
+		public static OK = 'success';
+		public static INFO = 'info';
+		public static WARNING = 'warning';
+		public static ERROR = 'danger';
 		
 	//== INSTANCE ATTRIBUTES =======================================================	
 	//== CLASS GETTERS AND SETTERS =================================================
@@ -39,7 +38,7 @@ module application.services {
 	//##############################################################################
 	//== CONSTUCTORS AND FACTORY METHODS ===========================================			
 				
-		constructor(private $rootScope){
+		constructor(private $rootScope) {
 			$rootScope.alerts = [];
 			
 			return this; //Must return because this service is angular factory
@@ -59,7 +58,7 @@ module application.services {
 			}; 
 			
 			alert.close = () => {
-				return this.closeAlert(alert)
+				return this.closeAlert(alert);
 			};
 			
 			this.$rootScope.alerts.push(alert);
@@ -72,7 +71,7 @@ module application.services {
 		 * Delete and hide an alert.
 		 */
 		public closeAlert = function(alert: Alert) {
-			this.$rootScope.alerts.splice(this.$rootScope.alerts.indexOf(alert),1); 
+			this.$rootScope.alerts.splice(this.$rootScope.alerts.indexOf(alert), 1); 
 		};
 		
 	//== PRIVATE AND AUXILIARY CLASS METHODS =======================================
@@ -83,21 +82,21 @@ module application.services {
 		 */
 		private getAlertIcon = function(alertType: string): string{
 			switch (alertType) {
-				case "success":
-					return "ok-sign";
+				case 'success':
+					return 'ok-sign';
 				
-				case "info":
-					return "info-sign";
+				case 'info':
+					return 'info-sign';
 					
-				case "warning":
-					return "exclamation-sign";
+				case 'warning':
+					return 'exclamation-sign';
 					
-				case "danger":
-					return "remove-sign"
+				case 'danger':
+					return 'remove-sign';
 				
 				default:
-					throw new Error("Unknown alertType: " + alertType + "\nPossible values are success, info, warning or danger");
+					throw new Error('Unknown alertType: ' + alertType + '\nPossible values are success, info, warning or danger');
 			}
-		}
+		};
 	}
 }
