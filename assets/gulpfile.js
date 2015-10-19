@@ -8,15 +8,16 @@ var gulp = require('gulp'),
 	tslint = require('gulp-tslint'),
 	jasmine = require('gulp-jasmine'),
 	notify = require('gulp-notify'),
-	Server = require('karma').Server
-
-gulp.task('build', function() {
-	var typescript = require('gulp-typescript');
-	var tsOptions = typescript.createProject({
+	Server = require('karma').Server,
+	typescript = require('gulp-typescript'),
+	runSequence = require('run-sequence');
+	
+var tsOptions = typescript.createProject({
 		declarationFiles: false,
 		target: 'ES5'
 	});
 
+gulp.task('build', function() {
 	var ts = gulp.src(['src/typings/**/*.d.ts', 'src/**/*.ts'])
 						.pipe(typescript(tsOptions));
 
@@ -34,15 +35,6 @@ gulp.task('dev', ['server', 'watch'], function() {
 
 });
 
-gulp.task('lint', function() {
-	gulp.src('src/app/services**/*.ts')//['src/app/**/*.ts','src/gamanager/**/*.ts','src/tests/**/*.ts','src/*.ts'])
-		.pipe(tslint())
-		.pipe(tslint.report('verbose', {
-			reportLimit: 50,
-			emitError: false
-		}));
-});
-
 gulp.task('watch', function () {
 	gulp.watch(['./src/**/*.ts'], ['build']);
 	gulp.watch(['./src/**/*.html'], ['build']);
@@ -56,6 +48,9 @@ gulp.task('server', function() {
 });
 
 gulp.task('test', function(done){
+	
+	//Synchronous task calling - hack, should repair from gulp v4
+	runSequence('build-tests','lint');
 	
 	return new Server({
 		configFile: __dirname + '/karma.conf.js',
@@ -73,6 +68,28 @@ gulp.task('test', function(done){
 			title: 'Jasmine Tests FAILED',
 			message: 'One or more tests failed, see the cli for details.'
 		}))*/
+});
+
+gulp.task('lint', function() {
+	gulp.src(['src/app/**/*.ts','src/gamanager/**/*.ts','src/tests/**/*.ts','src/*.ts'])
+		.pipe(tslint())
+		.pipe(tslint.report('verbose', {
+			reportLimit: 15,
+			emitError: false
+		}));
+});
+
+gulp.task('build-tests', function() {
+	var ts = gulp.src(['src/typings/**/*.d.ts', 'tests/**/*.ts'])
+		.pipe(typescript(tsOptions));
+
+	return merge(ts)
+		.pipe(concat('tests.js'))
+		.pipe(gulp.dest('dist/scripts'));
+});
+
+gulp.task('watch-tests', function () {
+	gulp.watch(['./tests/**/*.ts'], ['test']);
 });
 
 gulp.task('default', function() {
