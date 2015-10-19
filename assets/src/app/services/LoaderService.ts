@@ -15,10 +15,10 @@ module application.services {
 	//== INSTANCE ATTRIBUTES =======================================================
 	
 		/** Element which should class-changed */
-		public generalElement: HTMLElement = this.$document.find('body')[0];
+		public generalElement: HTMLElement;
 		
 		/** Shows if loader is visible (true) od hide (false) */
-		public loadingState: boolean = false;
+		public loadingState: boolean;
 			
 	//== CLASS GETTERS AND SETTERS =================================================
 	//== OTHER NON-PRIVATE CLASS METHODS =========================================== 
@@ -30,7 +30,8 @@ module application.services {
 			private $document: ng.IDocumentService,
 			private $timeout: ng.ITimeoutService
 		) {
-		
+			this.generalElement = this.$document.find('body')[0];
+			this.loadingState = false;
 		}
 	
 	//== INSTANCE GETTERS AND SETTERS ==============================================
