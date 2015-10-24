@@ -16,7 +16,7 @@ module application.services {
 	//== CLASS ATTRIBUTES ==========================================================
 			
 		//Angular DI 
-		public static $inject = ['$rootScope', '$log', '$timeout', 'alertService', 'loaderService'];
+		public static $inject = ['$log', '$timeout', 'alertService', 'loaderService'];
 		
 	//== INSTANCE ATTRIBUTES =======================================================		
 		
@@ -31,12 +31,11 @@ module application.services {
 	//##############################################################################
 	//== CONSTUCTORS AND FACTORY METHODS =========================================== 	
 		
-		constructor(
-			private $rootScope: any,  
+		constructor(  
 			private $log: ng.ILogService,
 			private $timeout: ng.ITimeoutService,
-			private alert: services.AlertService,
-			private loader: services.LoaderService
+			private alertSvc: services.AlertService,
+			private loaderSvc: services.LoaderService
 		) {
 			
 		} 
@@ -48,7 +47,7 @@ module application.services {
 		/** 
 		 * Hide the loader. 
 		 */
-		public hideLoader() {
+		public hideLoader(): void {
 			this.showLoader(false);
 		}
 		
@@ -64,22 +63,21 @@ module application.services {
 			
 			//Hide UI
 			if (loading) {
-				this.loadingTimeoutPromise = this.$timeout
-				(
-					(param) => {
+				this.loadingTimeoutPromise = this.$timeout(
+					() => {
 						this.hideLoader();
 						this.showAlert(gamanager.Strings.ERROR_REQUEST_TIMEOUT);
 					},
 					30000 //Timeout
 				);
 				
-				this.loader.showLoader();
+				this.loaderSvc.showLoader();
 			} else {
 				//Re-Open UI
 				this.$timeout.cancel(this.loadingTimeoutPromise);
 				this.loadingTimeoutPromise = null;
 				
-				this.loader.hideLoader();
+				this.loaderSvc.hideLoader();
 			}
 		}
 		
@@ -92,17 +90,17 @@ module application.services {
 		 * The other optional parameter is close timeout in milliseconds. 
 		 * Without them the alert never hide itself.
 		 */
-		public showAlert(msg: string, type?: string, timeout?: number) {
+		public showAlert(msg: string, type?: string, timeout?: number): void {
 			type = type || 'danger';
 			
 			this.$log.debug('AlertManager: Handling ' + type);
 			
-			var alert: Alert = this.alert.addAlert(type, msg);
+			var alert: Alert = this.alertSvc.addAlert(type, msg);
 
 			if (timeout) {
 				this.$timeout(
 					() => {
-						this.alert.closeAlert(alert);
+						this.alertSvc.closeAlert(alert);
 					},
 					timeout
 				);
