@@ -2,24 +2,9 @@
 describe('Service: LoaderService', () => {
 	
 	var loaderService: application.services.LoaderService,
-		$timeout;
+		$timeout: ng.ITimeoutService;
 		
 	beforeEach(() => {
-		
-		/*angular.mock.module(function($provide) {
-			$provide.service('$document', function(){
-				this.find = jasmine.createSpy('find');
-			})
-		});*/
-		
-		/*angular.mock.module({
-			'$document': {
-				find: function(selector){
-					return new Array(document.createElement('body'));
-				}
-			}
-		});*/
-		
 		angular.mock.module('GAManager');
 	});
 	
