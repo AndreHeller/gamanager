@@ -47,11 +47,38 @@ gulp.task('server', function() {
   });
 });
 
-gulp.task('test', function(done){
-	
+gulp.task('watch-tests', function () {
+	gulp.watch(['./tests/**/*.ts'], ['test']);
+});
+
+gulp.task('test', function(){
 	//Synchronous task calling - hack, should repair from gulp v4
-	runSequence('build-tests','lint');
-	
+	runSequence(
+		'build-tests',
+		'run-tests',
+		'lint'
+	);
+});
+
+gulp.task('build-tests', function() {
+	var ts = gulp.src(['src/typings/**/*.d.ts', 'tests/**/*.ts'])
+		.pipe(typescript(tsOptions));
+
+	return merge(ts)
+		.pipe(concat('tests.js'))
+		.pipe(gulp.dest('dist/scripts'));
+});
+
+gulp.task('lint', function() {
+	gulp.src(['src/app/**/*.ts','src/gamanager/**/*.ts','src/tests/**/*.ts','src/*.ts'])
+		.pipe(tslint())
+		.pipe(tslint.report('verbose', {
+			reportLimit: 15,
+			emitError: false
+		}));
+});
+
+gulp.task('run-tests', function(done) {
 	return new Server({
 		configFile: __dirname + '/karma.conf.js',
 		singleRun: true
@@ -70,27 +97,6 @@ gulp.task('test', function(done){
 		}))*/
 });
 
-gulp.task('lint', function() {
-	gulp.src(['src/app/**/*.ts','src/gamanager/**/*.ts','src/tests/**/*.ts','src/*.ts'])
-		.pipe(tslint())
-		.pipe(tslint.report('verbose', {
-			reportLimit: 15,
-			emitError: false
-		}));
-});
-
-gulp.task('build-tests', function() {
-	var ts = gulp.src(['src/typings/**/*.d.ts', 'tests/**/*.ts'])
-		.pipe(typescript(tsOptions));
-
-	return merge(ts)
-		.pipe(concat('tests.js'))
-		.pipe(gulp.dest('dist/scripts'));
-});
-
-gulp.task('watch-tests', function () {
-	gulp.watch(['./tests/**/*.ts'], ['test']);
-});
 
 gulp.task('default', function() {
 	console.log('Task default is empty. See gulpfile.js');
